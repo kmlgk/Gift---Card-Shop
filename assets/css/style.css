@@ -71,6 +71,19 @@ body {
 }
 
 /* ---------------------------------------------------------------------
+   Heading weight hierarchy — headings capped at 600, subheadings 400-550.
+   Selectors carry higher specificity than Tailwind's single-class
+   font-bold/font-extrabold utilities so they win regardless of source order.
+   --------------------------------------------------------------------- */
+h1.font-display,
+h2.font-display {
+  font-weight: 600;
+}
+h3.font-display {
+  font-weight: 500;
+}
+
+/* ---------------------------------------------------------------------
    Skip link — uses translateY, NOT left:-9999px (breaks RTL scrollWidth)
    --------------------------------------------------------------------- */
 .skip-link {
@@ -303,6 +316,10 @@ select:focus-visible,
     linear-gradient(to top, rgb(var(--ink-950) / 0.75), rgb(var(--ink-950) / 0.15) 45%, transparent 70%),
     linear-gradient(to right, rgb(var(--ink-950) / 0.88), rgb(var(--ink-950) / 0.55) 42%, rgb(var(--ink-950) / 0.1) 78%);
 }
+.hero-banner-scrim-center {
+  background:
+    radial-gradient(60% 85% at center, rgb(var(--ink-950) / 0.82) 0%, rgb(var(--ink-950) / 0.58) 55%, rgb(var(--ink-950) / 0.35) 100%);
+}
 .hero-banner .btn-fold-outline {
   border-color: rgb(var(--paper-50) / 0.65);
   color: rgb(var(--paper-50));
@@ -423,6 +440,7 @@ select:focus-visible,
   transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
   z-index: 3;
   transform-origin: top right;
+  pointer-events: none;
 }
 [dir="rtl"] .card-ribbon::before {
   border-width: 0 0 46px 46px;
@@ -449,6 +467,7 @@ select:focus-visible,
   opacity: 0;
   transform: scale(0.4) rotate(-25deg);
   transition: opacity 0.28s ease 0.06s, transform 0.28s ease 0.06s;
+  pointer-events: none;
 }
 [dir="rtl"] .card-ribbon .ribbon-icon {
   inset-inline-end: auto;
@@ -555,10 +574,16 @@ select:focus-visible,
    --------------------------------------------------------------------- */
 .postcard {
   position: relative;
+  display: flex;
+  flex-direction: column;
   background: rgb(var(--paper-100));
   border: 1px solid rgb(var(--plum-200) / 0.7);
   border-radius: 0.9rem;
   box-shadow: 0 12px 24px -16px rgb(var(--ink-900) / 0.35);
+}
+.postcard-attribution {
+  margin-top: auto;
+  padding-top: 1rem;
 }
 .dark .postcard {
   background: rgb(var(--ink-800));
@@ -1069,14 +1094,16 @@ select:focus-visible,
 /* Accordion (FAQ) */
 .accordion-panel {
   display: grid;
-  grid-template-rows: 0fr;
+  grid-template-rows: minmax(0, 0fr);
   transition: grid-template-rows 0.32s ease;
+  overflow: hidden;
 }
 .accordion-panel > div {
   overflow: hidden;
+  min-height: 0;
 }
 .accordion-item[data-open="true"] .accordion-panel {
-  grid-template-rows: 1fr;
+  grid-template-rows: minmax(0, 1fr);
 }
 .accordion-item[data-open="true"] .accordion-chevron {
   transform: rotate(180deg);
